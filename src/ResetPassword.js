@@ -1,4 +1,5 @@
 import { useState } from "react";
+import "./ResetPassword.css";
 import { gql } from "@apollo/client";
 import client from "./apollo";
 
@@ -11,7 +12,7 @@ const RESET_PASSWORD = gql`
 export default function ResetPassword() {
   const params = new URLSearchParams(window.location.search);
   const token = params.get("token");
-console.log("TOKEN FROM URL:", token);
+  console.log("TOKEN FROM URL:", token);
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
@@ -42,22 +43,29 @@ console.log("TOKEN FROM URL:", token);
   };
 
   return (
-    <div style={{ maxWidth: 400, margin: "100px auto", textAlign: "center" }}>
-      <h2>Reset Password</h2>
+    <div className="reset-container">
+      <h1 className="brand-name">GrabIt</h1>
+      <h2 className="reset-title">Reset Password</h2>
 
-      <input
-        type="password"
-        placeholder="New password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        style={{ width: "100%", padding: 10, marginBottom: 10 }}
-      />
+      <div className="input-group">
+        <input
+          type="password"
+          className="custom-input"
+          placeholder="New password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+      </div>
 
-      <button onClick={handleReset} disabled={loading}>
+      <button className="reset-button" onClick={handleReset} disabled={loading}>
         {loading ? "Resetting..." : "Reset Password"}
       </button>
 
-      <p>{message}</p>
+      {message && (
+        <p className={`message ${message.includes("success") ? "success" : "error"}`}>
+          {message}
+        </p>
+      )}
     </div>
   );
 }
